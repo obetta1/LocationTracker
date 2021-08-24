@@ -1,0 +1,69 @@
+{
+  "project_info": {
+    "project_number": "815230995240",
+    "firebase_url": "https://hcjava-5b849-default-rtdb.firebaseio.com",
+    "project_id": "hcjava-5b849",
+    "storage_bucket": "hcjava-5b849.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815230995240:android:1258e4472744dd37fede1d",
+        "android_client_info": {
+          "package_name": "com.example.hcjava"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "815230995240-gfevoklhpivviev3je73ng1rvhjfdb8j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEvfiN7z5QUeIEPL-3t4id8QwnjwFB5Mg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "815230995240-gfevoklhpivviev3je73ng1rvhjfdb8j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:815230995240:android:aa518dd8ceb9103bfede1d",
+        "android_client_info": {
+          "package_name": "com.example.locationtracker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "815230995240-gfevoklhpivviev3je73ng1rvhjfdb8j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEvfiN7z5QUeIEPL-3t4id8QwnjwFB5Mg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "815230995240-gfevoklhpivviev3je73ng1rvhjfdb8j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
