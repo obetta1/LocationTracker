@@ -75,11 +75,15 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == LOCATION_PERMISSION_REQUEST){
-            if(grantResults.contains(PackageManager.PERMISSION_GRANTED)){
+        if (requestCode == LOCATION_PERMISSION_REQUEST) {
+            if (grantResults.contains(PackageManager.PERMISSION_GRANTED)) {
                 getLocationAccess()
-            }else{
-                Toast.makeText(this, "Permission needs to be granted for this app to be functional", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Permission needs to be granted for this app to be functional",
+                    Toast.LENGTH_LONG
+                ).show()
 //                finish()
             }
         }
