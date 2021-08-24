@@ -35,39 +35,42 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var locationCallback: LocationCallback
     lateinit var databaseRef: DatabaseReference
 
-    //to access mile location
+    //to access fine  location
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMapsBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-       databaseRef = FirebaseDatabase.getInstance().reference
+//reference to the firebase
+        databaseRef = FirebaseDatabase.getInstance().reference
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
         //
-        fusedLocationClient =  LocationServices.getFusedLocationProviderClient(this)
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
 
-    private fun getLocationAccess(){
-        if(ContextCompat.checkSelfPermission(this,
-                android.Manifest.permission.ACCESS_FINE_LOCATION) ==
-            PackageManager.PERMISSION_GRANTED){
+    private fun getLocationAccess() {
+        if (ContextCompat.checkSelfPermission(
+                this,
+                android.Manifest.permission.ACCESS_FINE_LOCATION
+            ) ==
+            PackageManager.PERMISSION_GRANTED
+        ) {
             //map.isMyLocationEnabled = true
             getLocationUpdates()
             startLocationUpdates()
-        }else {
-            ActivityCompat.requestPermissions(this,
+        } else {
+            ActivityCompat.requestPermissions(
+                this,
                 arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION),
-                LOCATION_PERMISSION_REQUEST)
+                LOCATION_PERMISSION_REQUEST
+            )
         }
     }
-
-
     //opens the map if allowed, toast a message otherwise. works with the getLocationAccess()
     override fun onRequestPermissionsResult(
         requestCode: Int,
@@ -75,41 +78,45 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == LOCATION_PERMISSION_REQUEST){
-            if(grantResults.contains(PackageManager.PERMISSION_GRANTED)){
+        if (requestCode == LOCATION_PERMISSION_REQUEST) {
+            if (grantResults.contains(PackageManager.PERMISSION_GRANTED)) {
                 getLocationAccess()
-            }else{
-                Toast.makeText(this, "Permission needs to be granted for this app to be functional", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(
+                    this,
+                    "Permission needs to be granted for this app to be functional",
+                    Toast.LENGTH_LONG
+                ).show()
 //                finish()
             }
         }
     }
-
-
-
     //fetching location from firebase on location path
     val logListener = object : ValueEventListener {
         override fun onCancelled(error: DatabaseError) {
-            Toast.makeText(applicationContext, "Could not read from database", Toast.LENGTH_SHORT).show()
+            Toast.makeText(applicationContext, "Could not read from database", Toast.LENGTH_SHORT)
+                .show()
         }
 
         //using datasnapshot to get the data from firebase
         override fun onDataChange(dataSnapshot: DataSnapshot) {
 
             if (dataSnapshot.exists()) {
-       // read location data from partners device
-                val locationlogging = dataSnapshot.child("locationAnthony").getValue(UserDataClass::class.java)
-                val driverLat=locationlogging?.latitude
-                val driverLong=locationlogging?.longitude
-                if (driverLat !=null  && driverLong != null) {
+                // read location data from partners device
+                val locationlogging =
+                    dataSnapshot.child("locationAnthony").getValue(UserDataClass::class.java)
+                val driverLat = locationlogging?.latitude
+                val driverLong = locationlogging?.longitude
+                if (driverLat != null && driverLong != null) {
                     val driverLoc = LatLng(driverLat, driverLong)
-      Toast.makeText(applicationContext, "latitude  $driverLat", Toast.LENGTH_LONG).show()
-      Toast.makeText(applicationContext, "longitude  $driverLong", Toast.LENGTH_LONG).show()
-                    val markerOptions = MarkerOptions().position(driverLoc).title("Anthony id here")
+                    Toast.makeText(applicationContext, "latitude  $driverLat", Toast.LENGTH_LONG)
+                        .show()
+                    Toast.makeText(applicationContext, "longitude  $driverLong", Toast.LENGTH_LONG)
+                        .show()
+                    val markerOptions = MarkerOptions().position(driverLoc).title("Anthony is here")
                         .icon(BitmapDescriptorFactory.fromResource(R.drawable.anthony__2_))
                     mMap.addMarker(markerOptions)
                     mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(driverLoc, 15f))
-
 
                 }
             }
@@ -127,7 +134,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                 if (locationResult.locations.isNotEmpty()) {
                     val location = locationResult.lastLocation
 
-       //writing the co-ordinates of device current location  to firebase
+                    //writing the co-ordinates of device current location  to firebase
                     databaseRef = Firebase.database.reference
                     val locationlogging = UserDataClass(location.latitude, location.longitude)
                     databaseRef.addValueEventListener(logListener)
@@ -136,31 +143,28 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
 
                         }
                         .addOnFailureListener {
-                            Toast.makeText(applicationContext, "Error occured while writing the locations", Toast.LENGTH_LONG).show()
+                            Toast.makeText(
+                                applicationContext,
+                                "Error occured while writing the locations",
+                                Toast.LENGTH_LONG
+                            ).show()
                         }
-
                 }
             }
         }
     }
 
-
-
-
     private fun startLocationUpdates() {
 
-        if (ActivityCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+        if (ActivityCompat.checkSelfPermission(
                 this,
-                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
+
             return
         }
         fusedLocationClient.requestLocationUpdates(
@@ -169,16 +173,8 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
             null
         )
 
-//        fusedLocationClient.lastLocation.addOnCompleteListener {
-//            val location = it.result
-//            val locationlogging = UserDataClass(location.latitude, location.longitude)
-//            databaseRef.child("UserDataClass").setValue(locationlogging)
-//
-//
-//        }
 
     }
-
 
 
     /**
@@ -193,14 +189,9 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-       getLocationAccess()
-      startLocationUpdates()
-        //getLocationUpdates()
+        getLocationAccess()
+        startLocationUpdates()
 
 
-        // Add a marker in Sydney and move the camera
-//        val sydney = LatLng(-34.0, 151.0)
-//        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
     }
 }
